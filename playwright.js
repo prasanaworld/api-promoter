@@ -7,8 +7,9 @@ async function logToFileAfterAsyncTask(text, filePath) {
     setTimeout(resolve, 1000);
 
     try {
+      const timestamp = new Date().toISOString();
       // Append the log message to the file
-      fs.appendFile(filePath, `${text}\n`, (err, data) => {
+      fs.appendFile(filePath, `${timestamp},\t${text}\n`, (err, data) => {
         if (err) {
           return reject(err);
         }
@@ -170,12 +171,12 @@ async function performTest(index) {
     await browser.close();
 
     await logToFileAfterAsyncTask(
-      `Iteration:${index},\tBrowser:${chosenBrowser.browser},\tversion: ${chosenVersion.version},\tDevice Name: ${deviceName}\t success`,
+      `Iteration:${index},\tBrowser:${chosenBrowser.browser},\tversion: ${chosenVersion.version},\tDevice Name: ${deviceName},\t success`,
       fileName
     );
   } catch (e) {
     await logToFileAfterAsyncTask(
-      `Iteration:${index},\tBrowser:${chosenBrowser.browser},\tversion: ${chosenVersion.version},\tDevice Name: ${deviceName}\t Failed`,
+      `Iteration:${index},\tBrowser:${chosenBrowser.browser},\tversion: ${chosenVersion.version},\tDevice Name: ${deviceName},\t Failed`,
       fileName
     );
     console.log("e", e);

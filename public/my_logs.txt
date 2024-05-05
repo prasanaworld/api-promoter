@@ -1,2 +1,0 @@
-Iteration:0,	Browser:chrome,	version: 124,	Device Name: Moto G4 landscape	 success
-Iteration:0,	Browser:edge,	version: 124,	Device Name: Desktop Edge	 success
