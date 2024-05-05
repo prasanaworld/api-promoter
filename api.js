@@ -41,7 +41,24 @@ const requestWeight = [
   },
 ];
 
-apiRouter.get("", async (req, res) => {
+const sleep = (time) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, time);
+  });
+};
+
+function waitRandomTime() {
+  const minTime = 30 * 1000; // 10 seconds
+  const maxTime = 120 * 1000; // 2 minutes
+  const randomTime =
+    Math.floor(Math.random() * (maxTime - minTime + 1)) + minTime;
+
+  console.log("wait for randomTime", randomTime / 1000);
+
+  return sleep(randomTime);
+}
+
+apiRouter.get("/make_request", async (req, res) => {
   const noOfRequest = chooseItemWithProbability(requestWeight);
 
   const response = {
@@ -51,7 +68,10 @@ apiRouter.get("", async (req, res) => {
 
   for (let i = 0; i < noOfRequest.request; i++) {
     try {
-      await performTest(`${i}/${noOfRequest.request}`);
+      if (i !== 0) {
+        await waitRandomTime();
+      }
+      await performTest(`${i + 1}/${noOfRequest.request}`);
       response.result.push("success");
     } catch (e) {
       response.result.push(`Failed: ${e}`);

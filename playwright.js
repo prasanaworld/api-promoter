@@ -106,9 +106,9 @@ const browsers = [
 
 const browserItems = {
   safari: ["Desktop Safari", "iPhone 14 Pro", "iPhone 14 Pro Max"],
-  chrome: ["Moto G4 landscape", "Desktop Chrome", "Desktop Chrome HiDPI"],
+  chrome: ["Desktop Chrome", "Desktop Chrome HiDPI"],
   firefox: ["Desktop Firefox", "Desktop Firefox HiDPI"],
-  edge: ["Moto G4 landscape", "Desktop Edge", "Desktop Edge"],
+  edge: ["Desktop Edge", "Desktop Edge"],
 };
 
 async function performTest(index) {
@@ -161,11 +161,8 @@ async function performTest(index) {
     const shouldClickOnDemo = Math.floor(Math.random() * 2);
 
     if (shouldClickOnDemo === 1) {
-      console.log(
-        `clicked ${await page.locator(`a.w-button.dark`).last().textContent()}`
-      );
       await page.locator(`a.w-button.dark`).last().click();
-      await page.waitForTimeout(3000);
+      await page.waitForTimeout(2000);
     }
 
     await browser.close();
