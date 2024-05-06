@@ -21,23 +21,19 @@ function chooseItemWithProbability(items) {
 const requestWeight = [
   {
     request: 0,
-    weight: 70,
+    weight: 60,
   },
   {
     request: 1,
-    weight: 15,
+    weight: 20,
+  },
+  {
+    request: 2,
+    weight: 10,
   },
   {
     request: 3,
-    weight: 7,
-  },
-  {
-    request: 4,
-    weight: 5,
-  },
-  {
-    request: 7,
-    weight: 3,
+    weight: 10,
   },
 ];
 
@@ -71,8 +67,8 @@ apiRouter.get("/make_request", async (req, res) => {
       if (i !== 0) {
         await waitRandomTime();
       }
-      await performTest(`${i + 1}/${noOfRequest.request}`);
-      response.result.push("success");
+      const result = await performTest(`${i + 1}/${noOfRequest.request}`);
+      response.result.push(result);
     } catch (e) {
       response.result.push(`Failed: ${e}`);
     }

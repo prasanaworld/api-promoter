@@ -2,25 +2,6 @@ const fs = require("fs");
 const playwright = require("playwright-core");
 const { devices } = require("playwright-core");
 
-async function logToFileAfterAsyncTask(text, filePath) {
-  return new Promise((resolve, reject) => {
-    setTimeout(resolve, 1000);
-
-    try {
-      const timestamp = new Date().toISOString();
-      // Append the log message to the file
-      fs.appendFile(filePath, `${timestamp},\t${text}\n`, (err, data) => {
-        if (err) {
-          return reject(err);
-        }
-        return resolve();
-      }); // Add newline character for clarity
-    } catch (error) {
-      reject("failed");
-    }
-  });
-}
-
 function chooseItemFromArrayWithEqualProbability(items) {
   const randomIndex = Math.floor(Math.random() * items.length);
   return items[randomIndex];
@@ -118,8 +99,6 @@ async function performTest(index) {
     browserItems[chosenBrowser.browser]
   );
 
-  let fileName = `${__dirname}/public/my_logs.txt`;
-
   console.log(
     "Chosen version:",
     chosenBrowser.browser,
@@ -167,17 +146,9 @@ async function performTest(index) {
 
     await browser.close();
 
-    await logToFileAfterAsyncTask(
-      `Iteration:${index},\tBrowser:${chosenBrowser.browser},\tversion: ${chosenVersion.version},\tDevice Name: ${deviceName},\t success`,
-      fileName
-    );
+    return `Iteration:${index},\tBrowser:${chosenBrowser.browser},\tversion: ${chosenVersion.version},\tDevice Name: ${deviceName},\t demo_clicked: ${shouldClickOnDemo}, \tsuccess`;
   } catch (e) {
-    await logToFileAfterAsyncTask(
-      `Iteration:${index},\tBrowser:${chosenBrowser.browser},\tversion: ${chosenVersion.version},\tDevice Name: ${deviceName},\t Failed`,
-      fileName
-    );
-    console.log("e", e);
-    throw e;
+    return `Iteration:${index},\tBrowser:${chosenBrowser.browser},\tversion: ${chosenVersion.version},\tDevice Name: ${deviceName},\t Failed:${e}`;
   }
 }
 
